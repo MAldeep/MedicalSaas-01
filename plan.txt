@@ -1,0 +1,62 @@
+# Medical Files SaaS Project Plan 
+
+## [Overview]
+This Project serves the medical clinics.
+Its main adv. is to save the medical files of the patients in a secure way.
+so mainly, it is a SaaS application that allows the clinics to save the medical files of the patients in a secure way and facilitate the access to them.
+### [Features]
+Current Feature : 
+- a customized form that accepts the medical info of the patient and save it in a database.
+- a search feature that allows the clinics to search for the medical files of the patients.
+- a sharing feature that allows the clinics to share the medical files of the patients with other clinics.
+### [Design]
+Home page : 
+- a search bar that allows the clinics to search for the medical files of the patients.
+- a button that allows the clinics to add a new patient.
+- a button that allows the clinics to login.
+Patient's file page : 
+- a form that allows the clinics to fill the medical info of the patient.
+- a button that allows the clinics to save the medical info of the patient.
+File Page : 
+- a page that displays the medical info of the patient.
+- a button that allows the clinics to download the medical info of the patient.
+- a button that allows the clinics to share the medical info of the patient.
+- a button that allows the clinics to delete the medical info of the patient.
+- a button that allows the clinic to edit the medical info of the patient.
+- a button for logout.
+
+### [Technology Stack]
+- Next.js
+- Tailwind CSS
+- TypeScript
+- MongoDB
+- Node.js
+- Express
+- Firebase
+### [Timeline]
+- 1 month
+### [Team]
+- 2 developers
+### [Conclusion]
+This plan outlines a solid foundation for a medical SaaS MVP. However, critical details regarding security and specific implementation paths need refinement.
+
+## [AI Review & Suggestions]
+
+### 1. Technology Decisions
+- **Redundant Backend**: You listed Next.js, Node.js, and Express. Next.js handles backend logic via API Routes/Server Actions. **Suggestion**: Drop the separate Express server to simplify deployment and state management, unless you have a specific microservice need.
+- **Database Overlap**: You listed both MongoDB and Firebase. **Suggestion**: Clarify roles. 
+    - *Option A*: Firebase for everything (Auth, Database, Storage) -> Fastest for MVP.
+    - *Option B*: existing choice (MongoDB for data, Firebase for Auth/Storage) -> Good for scalability but more setup.
+- **File Storage**: You need a specific solution for storing standard files (X-rays, PDFs). MongoDB is poor for large files. **Suggestion**: Add AWS S3, Google Cloud Storage, or Vercel Blob to the stack.
+
+### 2. Critical Missing Feature: Security & Compliance
+- **HIPAA/GDPR**: Medical apps legally require strict data protection. 
+- **Audit Logs**: You MUST track every view/edit/share of a patient file. **Suggestion**: Add an "Audit Log" feature.
+- **Encryption**: valid encryption at rest and in transit is non-negotiable.
+
+### 3. Feature Enhancements
+- **Sharing Mechanism**: "Sharing with other clinics" is risky. **Suggestion**: Implement "Secure One-Time Links" with password protection and expiry, or a "Clinic-to-Clinic" handshake protocol.
+- **Patient Identification**: Search by name is not enough (duplicates). **Suggestion**: specific Patient ID or National ID field is required.
+
+### 4. UI/UX Recommendations
+- **Dashboard**: "Home page" should transition to a specific "Dashboard" view post-login showing recent patients or upcoming appointments.
