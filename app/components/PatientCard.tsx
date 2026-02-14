@@ -2,6 +2,7 @@
 
 import { IPatient } from "@/models/Patient";
 import { User, Phone, Mail, Calendar, Hash } from "lucide-react";
+import Link from "next/link";
 
 interface PatientCardProps {
   patient: IPatient;
@@ -17,7 +18,10 @@ export default function PatientCard({ patient }: PatientCardProps) {
   };
 
   return (
-    <div className="bg-white border border-[rgb(var(--color-border))] rounded-xl p-6 hover:shadow-lg transition-shadow cursor-pointer">
+    <Link
+      href={`/patients/${patient._id?.toString()}`}
+      className="block bg-white border border-[rgb(var(--color-border))] rounded-xl p-6 hover:shadow-lg transition-shadow cursor-pointer"
+    >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-[rgb(var(--color-primary))] bg-opacity-10 rounded-full flex items-center justify-center">
@@ -62,6 +66,6 @@ export default function PatientCard({ patient }: PatientCardProps) {
           </p>
         </div>
       )}
-    </div>
+    </Link>
   );
 }
