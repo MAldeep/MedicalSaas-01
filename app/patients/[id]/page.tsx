@@ -16,8 +16,10 @@ import {
   ArrowLeft,
   Edit,
   Loader2,
+  CheckCircle,
 } from "lucide-react";
 import Link from "next/link";
+import EditPatientForm from "@/app/components/patients/EditPatientForm";
 
 export default function PatientFilePage() {
   const params = useParams();
@@ -25,6 +27,8 @@ export default function PatientFilePage() {
   const [patient, setPatient] = useState<IPatient | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -77,6 +81,31 @@ export default function PatientFilePage() {
     return age;
   };
 
+  const handleEditSuccess = async () => {
+    setIsEditModalOpen(false);
+    setShowSuccessMessage(true);
+
+    // Refresh patient data
+    try {
+      const res = await fetch(`/api/patients/${params.id}`);
+      const data = await res.json();
+      if (res.ok) {
+        setPatient(data.data);
+      }
+    } catch (err) {
+      console.error("Error refreshing patient data:", err);
+    }
+
+    // Hide success message after 3 seconds
+    setTimeout(() => {
+      setShowSuccessMessage(false);
+    }, 3000);
+  };
+
+  const handleEditCancel = () => {
+    setIsEditModalOpen(false);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[rgb(var(--color-bg))] flex items-center justify-center">
@@ -111,6 +140,22 @@ export default function PatientFilePage() {
 
   return (
     <div className="min-h-screen bg-[rgb(var(--color-bg))] py-8 px-4">
+      {/* Success Message */}
+      {showSuccessMessage && (
+        <div className="fixed top-4 right-4 z-50 bg-green-50 text-green-600 px-6 py-4 rounded-lg shadow-lg border border-green-200 flex items-center gap-3 animate-slide-in">
+          <CheckCircle className="h-5 w-5" />
+          <span className="font-medium">Patient updated successfully!</span>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {isEditModalOpen && patient && (
+        <EditPatientForm
+          patient={patient}
+          onSuccess={handleEditSuccess}
+          onCancel={handleEditCancel}
+        />
+      )}
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -121,7 +166,10 @@ export default function PatientFilePage() {
             <ArrowLeft className="h-5 w-5" />
             Back to Patients
           </Link>
-          <button className="btn-primary flex items-center gap-2">
+          <button
+            onClick={() => setIsEditModalOpen(true)}
+            className="btn-primary flex items-center gap-2"
+          >
             <Edit className="h-4 w-4" />
             Edit Patient
           </button>
