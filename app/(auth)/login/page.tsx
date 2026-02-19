@@ -16,7 +16,6 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-
     try {
       const result = await signIn("credentials", {
         email,
