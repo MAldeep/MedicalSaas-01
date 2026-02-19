@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
 export interface IPatient extends Document {
   patientId: string;
@@ -18,6 +18,15 @@ export interface IPatient extends Document {
     filename: string;
     url: string;
     uploadedAt: Date;
+  }>;
+  visits?: Array<{
+    _id?: Types.ObjectId;
+    date: Date;
+    reason: string;
+    diagnosis?: string;
+    procedure?: string;
+    doctor?: string;
+    createdAt: Date;
   }>;
   createdAt: Date;
   updatedAt: Date;
@@ -86,6 +95,36 @@ const PatientSchema: Schema = new Schema(
         filename: String,
         url: String,
         uploadedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    visits: [
+      {
+        date: {
+          type: Date,
+          required: true,
+          default: Date.now,
+        },
+        reason: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        diagnosis: {
+          type: String,
+          trim: true,
+        },
+        procedure: {
+          type: String,
+          trim: true,
+        },
+        doctor: {
+          type: String,
+          trim: true,
+        },
+        createdAt: {
           type: Date,
           default: Date.now,
         },

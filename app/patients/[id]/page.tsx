@@ -17,6 +17,7 @@ import EmergencyContact from "./components/EmergencyContact";
 import MedicalHistory from "./components/MedicalHistory";
 import Attachments from "./components/Attachments";
 import RecordInfo from "./components/RecordInfo";
+import Visits from "./components/Visits";
 
 export default function PatientFilePage() {
   const params = useParams();
@@ -121,6 +122,7 @@ export default function PatientFilePage() {
               attachments={patient.attachments}
               onUploadSuccess={refreshPatient}
             />
+            <Visits patientId={String(params.id)} />
             <RecordInfo patient={patient} />
           </div>
         </div>

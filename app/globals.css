@@ -101,4 +101,51 @@ body {
     border-color: rgb(var(--color-primary));
     box-shadow: 0 0 0 2px rgb(var(--color-primary) / 0.15);
   }
+
+  .btn-danger {
+    background: rgb(var(--color-error));
+    color: white;
+    border-radius: var(--radius-md);
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+  }
+
+  .btn-danger:hover {
+    background: rgb(185 28 28); /* red-700 */
+  }
+
+  /* Responsive table cell — stacks on mobile, normal td on sm+ */
+  .responsive-cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid rgb(var(--color-border));
+    font-size: 0.875rem;
+  }
+
+  .responsive-cell:last-child {
+    border-bottom: none;
+  }
+
+  .responsive-cell::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: rgb(var(--color-text-muted));
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @media (min-width: 640px) {
+    .responsive-cell {
+      display: table-cell;
+      padding: 0.75rem;
+      border-bottom: none;
+    }
+
+    .responsive-cell::before {
+      content: none;
+    }
+  }
 }
