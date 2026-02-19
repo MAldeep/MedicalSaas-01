@@ -11,7 +11,7 @@ export default function RecordInfo({ patient }: RecordInfoProps) {
       <h2 className="text-sm font-semibold text-[rgb(var(--color-text-muted))] mb-3">
         Record Information
       </h2>
-      <div className="grid grid-cols-2 gap-4 text-sm">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
         <div>
           <p className="text-[rgb(var(--color-text-muted))]">Created</p>
           <p className="text-[rgb(var(--color-text))] font-medium">

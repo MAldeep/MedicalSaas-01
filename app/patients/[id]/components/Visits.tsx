@@ -29,17 +29,17 @@ export default function Visits({ patientId }: VisitsProp) {
     getAllVisits();
   }, [patientId]);
   return (
-    <div className="card p-6">
+    <div className="card p-4 sm:p-6">
       {/* TOP */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold">Visits</h2>
-        <button className="btn btn-primary">Add Visit</button>
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <h2 className="text-lg sm:text-xl font-semibold">Visits</h2>
+        <button className="btn-primary text-sm">Add Visit</button>
       </div>
 
       {/* TABLE */}
-      <div className="overflow-x-auto -mx-2 sm:mx-0">
-        <table className="visits-table w-full border-collapse min-w-[600px] sm:min-w-full">
-          <thead className="hidden sm:table-header-group mb-2">
+      <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+        <table className="visits-table w-full border-collapse sm:min-w-full">
+          <thead className="hidden sm:table-header-group">
             <tr className="bg-gray-100 rounded-2xl">
               <th className="text-left p-3 text-sm font-semibold text-gray-600 first:rounded-l-2xl last:rounded-r-2xl">
                 Date

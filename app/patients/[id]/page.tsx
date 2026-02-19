@@ -85,7 +85,7 @@ export default function PatientFilePage() {
     return <ErrorState error={error} onReturn={() => router.push("/")} />;
 
   return (
-    <div className="min-h-screen bg-[rgb(var(--color-bg))] py-8 px-4">
+    <div className="min-h-screen bg-[rgb(var(--color-bg))] py-4 px-3 sm:py-6 sm:px-6 lg:py-8 lg:px-8">
       {/* Success Message */}
       {showSuccessMessage && <SuccessMessage />}
 

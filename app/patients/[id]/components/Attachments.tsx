@@ -232,12 +232,12 @@ export default function Attachments({
             {attachments.map((attachment, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-4 border border-[rgb(var(--color-border))] rounded-lg hover:bg-[rgb(var(--color-bg))] transition-colors"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 border border-[rgb(var(--color-border))] rounded-lg hover:bg-[rgb(var(--color-bg))] transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <FileText className="h-5 w-5 text-[rgb(var(--color-primary))]" />
-                  <div>
-                    <p className="text-[rgb(var(--color-text))] font-medium">
+                <div className="flex items-center gap-3 min-w-0">
+                  <FileText className="h-5 w-5 text-[rgb(var(--color-primary))] shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[rgb(var(--color-text))] font-medium truncate">
                       {attachment.filename}
                     </p>
                     <p className="text-sm text-[rgb(var(--color-text-muted))]">
@@ -245,30 +245,30 @@ export default function Attachments({
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col lg:flex-row items-center gap-2">
+                <div className="flex flex-row flex-wrap items-center gap-2 shrink-0">
                   <button
                     onClick={() => handlePreview(attachment.url)}
-                    className="btn-outline flex items-center gap-2"
+                    className="btn-outline flex items-center gap-1.5 text-xs sm:text-sm px-2.5 sm:px-4"
                   >
-                    <Eye className="h-4 w-4" />
+                    <Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     Preview
                   </button>
                   <button
                     onClick={() =>
                       handleDownload(attachment.url, attachment.filename)
                     }
-                    className="btn-outline flex items-center gap-2"
+                    className="btn-outline flex items-center gap-1.5 text-xs sm:text-sm px-2.5 sm:px-4"
                   >
-                    <Download className="h-4 w-4" />
+                    <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     Download
                   </button>
                   <button
                     onClick={() =>
                       handleDeleteClick(index, attachment.filename)
                     }
-                    className="btn-outline flex items-center gap-2 text-red-500 hover:border-red-400"
+                    className="btn-outline flex items-center gap-1.5 text-xs sm:text-sm px-2.5 sm:px-4 text-red-500 hover:border-red-400"
                   >
-                    <Trash className="h-4 w-4" />
+                    <Trash className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     Delete
                   </button>
                 </div>
