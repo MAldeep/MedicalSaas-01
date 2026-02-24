@@ -48,7 +48,7 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
 
     const { id, visitId } = await params;
     const body = await request.json();
-    const { date, reason, diagnosis, procedure, doctor } = body;
+    const { date, reason, diagnosis, procedure, doctor, nextSteps } = body;
 
     await dbConnect();
 
@@ -68,7 +68,9 @@ export async function PATCH(request: NextRequest, { params }: RouteContext) {
     if (diagnosis !== undefined) visit.diagnosis = diagnosis;
     if (procedure !== undefined) visit.procedure = procedure;
     if (doctor !== undefined) visit.doctor = doctor;
+    if (nextSteps !== undefined) visit.nextSteps = nextSteps;
 
+    patient.markModified("visits");
     await patient.save();
 
     return NextResponse.json({ success: true, data: visit });

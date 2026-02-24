@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 
 const visitSchema = z.object({
   date: z.string().min(1, "Date is required"),
@@ -23,9 +24,18 @@ const visitSchema = z.object({
     .string()
     .max(100, "Doctor name must be less than 100 characters")
     .optional(),
+  nextSteps: z
+    .string()
+    .max(1000, "Next steps must be less than 1000 characters")
+    .optional(),
 });
 
 type VisitFormData = z.infer<typeof visitSchema>;
+
+interface AttachmentFile {
+  filename: string;
+  url: string; // base64 data URL
+}
 
 interface NewVisitFormProps {
   patientId: string;
@@ -33,6 +43,9 @@ interface NewVisitFormProps {
 
 export default function NewVisitForm({ patientId }: NewVisitFormProps) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [attachments, setAttachments] = useState<AttachmentFile[]>([]);
+  const [fileError, setFileError] = useState<string | null>(null);
 
   const {
     register,
@@ -47,15 +60,41 @@ export default function NewVisitForm({ patientId }: NewVisitFormProps) {
       diagnosis: "",
       procedure: "",
       doctor: "",
+      nextSteps: "",
     },
   });
 
+  // ── File picker ────────────────────────────────────────────────────────────
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      setFileError("File must be smaller than 10 MB.");
+      return;
+    }
+    setFileError(null);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setAttachments((prev) => [
+        ...prev,
+        { filename: file.name, url: reader.result as string },
+      ]);
+    };
+    reader.readAsDataURL(file);
+    // reset input so same file can be re-selected
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removeAttachment = (index: number) =>
+    setAttachments((prev) => prev.filter((_, i) => i !== index));
+
+  // ── Submit ─────────────────────────────────────────────────────────────────
   const onSubmit = async (data: VisitFormData) => {
     try {
       const res = await fetch(`/api/patients/${patientId}/visits`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, visitAttachments: attachments }),
       });
 
       const responseData = await res.json();
@@ -203,6 +242,85 @@ export default function NewVisitForm({ patientId }: NewVisitFormProps) {
         />
         {errors.doctor && (
           <p className="text-red-500 text-xs mt-1">{errors.doctor.message}</p>
+        )}
+      </div>
+
+      {/* Next Steps */}
+      <div className="space-y-2">
+        <label
+          htmlFor="nextSteps"
+          className="block text-sm font-medium text-[rgb(var(--color-text))]"
+        >
+          Next Steps{" "}
+          <span className="text-[rgb(var(--color-text-muted))] font-normal">
+            (Optional)
+          </span>
+        </label>
+        <textarea
+          id="nextSteps"
+          {...register("nextSteps")}
+          rows={3}
+          placeholder="Follow-up appointments, medications, referrals…"
+          className={`input w-full resize-none ${errors.nextSteps ? "border-red-500" : ""}`}
+        />
+        {errors.nextSteps && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.nextSteps.message}
+          </p>
+        )}
+      </div>
+
+      {/* Attachments */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <label className="block text-sm font-medium text-[rgb(var(--color-text))]">
+            Attachments{" "}
+            <span className="text-[rgb(var(--color-text-muted))] font-normal">
+              (Optional)
+            </span>
+          </label>
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            className="text-xs px-3 py-1.5 rounded-lg border border-[rgb(var(--color-border))] hover:bg-[rgb(var(--color-border))] transition-colors"
+          >
+            + Add File
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            className="hidden"
+            onChange={handleFileChange}
+            accept="image/*,.pdf,.doc,.docx,.txt"
+          />
+        </div>
+
+        {fileError && <p className="text-red-500 text-xs">{fileError}</p>}
+
+        {attachments.length === 0 ? (
+          <p className="text-xs text-[rgb(var(--color-text-muted))] italic py-2">
+            No files added yet.
+          </p>
+        ) : (
+          <ul className="space-y-1.5">
+            {attachments.map((att, idx) => (
+              <li
+                key={idx}
+                className="flex items-center justify-between px-3 py-2 rounded-lg border border-[rgb(var(--color-border))] bg-[rgb(var(--color-bg))]"
+              >
+                <span className="text-sm text-[rgb(var(--color-text))] truncate max-w-[calc(100%-3rem)]">
+                  {att.filename}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => removeAttachment(idx)}
+                  className="text-red-500 hover:text-red-700 text-xs font-medium shrink-0 ml-2"
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 

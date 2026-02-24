@@ -26,6 +26,12 @@ export interface IPatient extends Document {
     diagnosis?: string;
     procedure?: string;
     doctor?: string;
+    nextSteps?: string;
+    visitAttachments?: Array<{
+      filename: string;
+      url: string;
+      uploadedAt: Date;
+    }>;
     createdAt: Date;
   }>;
   createdAt: Date;
@@ -124,6 +130,20 @@ const PatientSchema: Schema = new Schema(
           type: String,
           trim: true,
         },
+        nextSteps: {
+          type: String,
+          trim: true,
+        },
+        visitAttachments: [
+          {
+            filename: { type: String, required: true },
+            url: { type: String, required: true },
+            uploadedAt: {
+              type: Date,
+              default: Date.now,
+            },
+          },
+        ],
         createdAt: {
           type: Date,
           default: Date.now,

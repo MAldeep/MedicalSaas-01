@@ -48,7 +48,15 @@ export async function POST(
 
     const { id } = await params;
     const body = await request.json();
-    const { date, reason, diagnosis, procedure, doctor } = body;
+    const {
+      date,
+      reason,
+      diagnosis,
+      procedure,
+      doctor,
+      nextSteps,
+      visitAttachments,
+    } = body;
 
     if (!reason) {
       return NextResponse.json(
@@ -70,6 +78,8 @@ export async function POST(
       diagnosis: diagnosis ?? "",
       procedure: procedure ?? "",
       doctor: doctor ?? "",
+      nextSteps: nextSteps ?? "",
+      visitAttachments: Array.isArray(visitAttachments) ? visitAttachments : [],
       createdAt: new Date(),
     };
 
