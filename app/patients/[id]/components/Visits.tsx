@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface VisitsProp {
@@ -29,16 +30,20 @@ export default function Visits({ patientId }: VisitsProp) {
     getAllVisits();
   }, [patientId]);
   return (
-    <div className="card p-4 sm:p-6">
+    <div className="card p-4 sm:p-6 flex flex-col gap-5">
       {/* TOP */}
-      <div className="flex items-center justify-between mb-4 sm:mb-6">
+      <div className="flex items-center justify-between">
         <h2 className="text-lg sm:text-xl font-semibold">Visits</h2>
-        <button className="btn-primary text-sm">Add Visit</button>
+        <Link
+          href={`/patients/${patientId?.toString()}/addNewVisit`}
+          className="btn-primary text-sm"
+        >
+          Add Visit
+        </Link>
       </div>
-
       {/* TABLE */}
-      <div className="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
-        <table className="visits-table w-full border-collapse sm:min-w-full">
+      <div className="overflow-x-auto sm:mx-0 px-4 sm:px-0">
+        <table className=" w-full border-collapse sm:min-w-full ">
           <thead className="hidden sm:table-header-group">
             <tr className="bg-gray-100 rounded-2xl">
               <th className="text-left p-3 text-sm font-semibold text-gray-600 first:rounded-l-2xl last:rounded-r-2xl">
