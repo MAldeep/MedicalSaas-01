@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import LoginHead from "./LoginHead";
+import LoginToReg from "./LoginToReg";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -40,14 +41,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[rgb(var(--color-background))] flex items-center justify-center px-4">
       <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-[rgb(var(--color-text))]">
-            Sign In
-          </h1>
-          <p className="mt-2 text-[rgb(var(--color-text-muted))]">
-            Access your medical files dashboard
-          </p>
-        </div>
+        <LoginHead />
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           {error && (
@@ -55,7 +49,9 @@ export default function LoginPage() {
               {error}
             </div>
           )}
-
+          {/* email
+              password
+            */}
           <div className="space-y-4">
             <div>
               <label
@@ -97,7 +93,6 @@ export default function LoginPage() {
               />
             </div>
           </div>
-
           <div>
             <button
               type="submit"
@@ -107,18 +102,7 @@ export default function LoginPage() {
               {isLoading ? "Signing in..." : "Sign In"}
             </button>
           </div>
-
-          <div className="text-center">
-            <p className="text-sm text-[rgb(var(--color-text-muted))]">
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/register"
-                className="font-medium text-[rgb(var(--color-primary))] hover:underline"
-              >
-                Sign up
-              </Link>
-            </p>
-          </div>
+          <LoginToReg />
         </form>
       </div>
     </div>
