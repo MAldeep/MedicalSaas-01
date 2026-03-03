@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import RegHead from "./RegHead";
+import RegToLogin from "./RegToLogin";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -61,15 +62,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-[rgb(var(--color-background))] flex items-center justify-center px-4">
       <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-[rgb(var(--color-text))]">
-            Create Account
-          </h1>
-          <p className="mt-2 text-[rgb(var(--color-text-muted))]">
-            Join Medical Files SaaS today
-          </p>
-        </div>
-
+        <RegHead />
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
@@ -151,18 +144,7 @@ export default function RegisterPage() {
               {isLoading ? "Creating account..." : "Sign Up"}
             </button>
           </div>
-
-          <div className="text-center">
-            <p className="text-sm text-[rgb(var(--color-text-muted))]">
-              Already have an account?{" "}
-              <Link
-                href="/login"
-                className="font-medium text-[rgb(var(--color-primary))] hover:underline"
-              >
-                Sign in
-              </Link>
-            </p>
-          </div>
+          <RegToLogin />
         </form>
       </div>
     </div>
